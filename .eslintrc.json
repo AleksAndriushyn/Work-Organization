@@ -1,0 +1,66 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "presets": ["next/babel"],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "import",
+    "styled-components",
+    { "ssr": true }
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "rules": {
+    "@typescript-eslint/ban-types": "off",
+    // "linebreak-style": ["error", "unix"],
+    "quotes": ["warn", "single"],
+    "semi": ["error", "never"],
+    "react/prop-types": "off",
+    "linebreak-style": 0,
+    "no-use-before-define": "off",
+    "react/jsx-filename-extension": [
+      2,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ],
+    "no-underscore-dangle": [
+      "error",
+      { "allow": ["__REDUX_DEVTOOLS_EXTENSION__"] }
+    ],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "react/jsx-props-no-spreading": "off",
+    "no-unused-expressions": "off",
+    "@typescript-eslint/no-var-requires": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  }
+}
