@@ -11,6 +11,7 @@ import {
   ListItemText,
   ListSubheader,
 } from '@mui/material'
+import { PrismaClient } from '@prisma/client'
 import Head from 'next/head'
 import { useState } from 'react'
 import CreateButton from '../../components/CreateButton'
@@ -18,11 +19,33 @@ import Layout from '../../components/Layout'
 import { Styles } from '../../components/styled-components/global.styled'
 import TaskDialog from '../../components/Task/TaskDialog'
 import { saveData } from '../../lib/api'
-import { getProjectById } from '../../lib/projects'
+// import { getProjectById } from '../../lib/projects'
 import { Project, Task } from '../../types/types'
 
 export async function getServerSideProps({ params }: any) {
-  return await getProjectById(params?.id)
+  const prisma = new PrismaClient()
+  const project = await prisma.project.findUnique({
+    where: { id: params.id },
+    include: { tasks: true },
+  })
+  let projects = await prisma.project.findMany()
+  projects = projects.map((el: any) => {
+    el.type = JSON.parse(el.type)
+    return el
+  })
+  if (!project) {
+    return {
+      props: { hasError: true },
+    }
+  }
+
+  return {
+    props: {
+      project,
+      projects,
+    },
+  }
+  // return await getProjectById(params?.id)
 }
 
 const Project = ({
