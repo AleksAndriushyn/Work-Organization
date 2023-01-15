@@ -1,11 +1,9 @@
-import { PrismaClient, Task } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 export async function getTasks() {
-  let tasksData: Task[] = await prisma.task.findMany()
-
-  return tasksData
+  return await prisma.task.findMany()
 }
 
 export async function getTaskById(itemID: string) {

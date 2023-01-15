@@ -40,7 +40,7 @@ const Project = ({
   )
 
   const onSubmit = async () => {
-    task.projectId = project.id
+    if (task) task.projectId = project.id
     const res = await saveData(task, 'task/createTask')
     setIsOpen(false)
     project?.tasks?.push(res)

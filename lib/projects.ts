@@ -14,7 +14,7 @@ export async function getProjects() {
 }
 
 export async function getEachProjectId() {
-  let projectsData: Project[] = await getProjects()
+  const projectsData: Project[] = await getProjects()
   const ids = projectsData.map((el: Project) => ({
     params: { id: el.id },
   }))
