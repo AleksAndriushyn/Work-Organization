@@ -18,13 +18,7 @@
     "sourceType": "module"
   },
   "presets": ["next/babel"],
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "import",
-    "styled-components",
-    { "ssr": true }
-  ],
+  "plugins": ["react", "@typescript-eslint", "import"],
   "settings": {
     "import/resolver": {
       "node": {

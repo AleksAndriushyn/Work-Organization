@@ -3,5 +3,5 @@
   "tabWidth": 2,       
   "endOfLine": "crlf",
   "printWidth": 80,
-  "semi": false   
+  "semi": false
 }

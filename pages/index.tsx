@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Layout from '../components/Layout'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -7,9 +8,14 @@ export default function Home() {
       <Head>
         <title>Home Page</title>
       </Head>
-      <main className={styles.main}>
-        <section className={styles.description}>Main Page</section>
-      </main>
+      <Layout>
+        <main className={styles.main}>
+          <section className={styles.description}>
+            Project detailed page
+          </section>
+        </main>
+      </Layout>
     </>
   )
 }
+

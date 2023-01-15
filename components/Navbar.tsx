@@ -1,61 +1,24 @@
+import { Box, MenuItem } from '@mui/material'
 import Link from 'next/link'
-import { useState } from 'react'
 
 const MENU_LIST = [
-  { text: 'Companies', href: '/companies/Companies' },
-  { text: 'Contact', href: '/contact' }
+  { text: 'Projects', href: '/Projects' },
+  { text: 'Tasks', href: '/Tasks' },
 ]
 
 const Navbar = () => {
-  const [activeIdx, setActiveIdx] = useState(-1)
   return (
-    <header>
-      <nav style={{ margin: '10px' }}>
-        <Link
-          href={'/'}
-          onClick={() => {
-            setActiveIdx(-1)
-          }}
-        >
-          Work Organization
-        </Link>
-        <div
-          style={{
-            float: 'right',
-            marginRight: '200px'
-          }}
-        >
-          <div style={{ display: 'flex' }}>
-            <Link
-              href={'/'}
-              onClick={() => {
-                setActiveIdx(-1)
-              }}
-            >
-              Home
-            </Link>
-            {MENU_LIST.map((menu, idx) => (
-              <div
-                onClick={() => {
-                  setActiveIdx(idx)
-                }}
-                style={
-                  activeIdx === idx
-                    ? {
-                        marginLeft: '10px',
-                        textDecoration: 'underline'
-                      }
-                    : { marginLeft: '10px' }
-                }
-                key={menu.text}
-              >
-                <Link href={menu.href}>{menu.text}</Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </nav>
-    </header>
+    <Box style={{ display: 'flex', textDecoration: 'none' }}>
+      <MenuItem style={{ background: 'none' }}>
+        <Link href={'/'}>Work Organization</Link>
+      </MenuItem>
+      {MENU_LIST.map((menu) => (
+        <MenuItem style={{ background: 'none' }} key={menu.text}>
+          <Link href={menu.href}>{menu.text}</Link>
+        </MenuItem>
+      ))}
+    </Box>
   )
 }
 export default Navbar
+
