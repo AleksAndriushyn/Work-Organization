@@ -1,18 +1,21 @@
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
-import { SubmitHandler, FieldValues } from 'react-hook-form'
+import { FieldValues, SubmitHandler } from 'react-hook-form'
 import CreateButton from '../components/CreateButton'
 import Layout from '../components/Layout'
 import TaskDialog from '../components/Task/TaskDialog'
 import TaskTable from '../components/Task/TaskTable'
+import { server } from '../config'
 import { saveData } from '../lib/api'
-import { getTasks } from '../lib/tasks'
+// import { getTasks } from '../lib/tasks'
 import { Styles, TableStyle } from '../styled-components/global.styled'
 import { Task } from '../types/types'
 
-export const getStaticProps: GetStaticProps = async () => {
-  const tasksData = await getTasks()
+export const getServerSideProps: GetServerSideProps = async () => {
+  const tasksData = await fetch(`${server}/api/task/getTasks`, {
+    method: 'GET',
+  }).then(async (res) => await res.json())
   return {
     props: {
       tasksData,

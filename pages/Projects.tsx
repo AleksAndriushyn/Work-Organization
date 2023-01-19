@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
@@ -6,13 +6,16 @@ import CreateButton from '../components/CreateButton'
 import Layout from '../components/Layout'
 import ProjectDialog from '../components/Project/ProjectDialog'
 import ProjectTable from '../components/Project/ProjectTable'
+import { server } from '../config'
 import { saveData } from '../lib/api'
-import { getProjects } from '../lib/projects'
+// import { getProjects } from '../lib/projects'
 import { Styles, TableStyle } from '../styled-components/global.styled'
 import { Project } from '../types/types'
 
-export const getStaticProps: GetStaticProps = async () => {
-  const projectsData = await getProjects()
+export const getServerSideProps: GetServerSideProps = async () => {
+  const projectsData = await fetch(`${server}/api/project/getProjects`, {
+    method: 'GET',
+  }).then(async (res) => await res.json())
   return {
     props: {
       projectsData,

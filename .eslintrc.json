@@ -5,6 +5,7 @@
     "node": true
   },
   "extends": [
+    "plugin:@next/next/recommended",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier"

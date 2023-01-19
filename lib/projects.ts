@@ -2,7 +2,6 @@ import { server } from '../config'
 import { Project } from '../types/types'
 
 export async function getProjects(): Promise<Project[]> {
-  console.log('server', server)
   return await fetch(`${server}/api/project/getProjects`, {
     method: 'GET',
   }).then(async (res) => await res.json())
