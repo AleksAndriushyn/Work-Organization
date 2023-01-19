@@ -1,3 +1,5 @@
+import { ParsedUrlQuery } from "querystring"
+
 export type Type = {
   id: string
   label: string
@@ -25,4 +27,8 @@ export type Task = {
   assignee: User
   reporter: string
   projectId: string
+}
+
+export interface IParams extends ParsedUrlQuery {
+  id: string
 }

@@ -5,7 +5,7 @@ const CreateButton = ({ handleClickOpen, text }: any) => {
     <div style={{ width: '100%' }}>
       <Button
         variant={'contained'}
-        style={{ float: 'right', margin: '10px 30px 0 0' }}
+        style={{ float: 'right', margin: '2rem 5rem 0 0' }}
         onClick={() => handleClickOpen(true)}
       >
         {text}

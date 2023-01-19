@@ -8,9 +8,8 @@ export const Styles = styled.div`
 `
 
 export const TableStyle = styled.div`
-  padding: 3rem 5rem 0 5rem;
+  padding: 2rem 5rem 0 5rem;
 
-  margin: 10px;
   width: 100%;
   table {
     border: 1px solid #e0e0e0;
@@ -28,5 +27,15 @@ export const ErrorStyle = styled.p`
   p::before {
     display: inline;
     content: '⚠ ';
+  }
+`
+
+export const MenuItemStyle = styled.div`
+  .menu-item {
+    background: none;
+  }
+
+  &:hover .link {
+    color: yellow;
   }
 `

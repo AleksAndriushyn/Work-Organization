@@ -15,7 +15,7 @@ const Header = (props: {
   }
 
   return (
-    <AppBar color="transparent" position="static">
+    <AppBar style={{ backgroundColor: '#212529' }} position="static">
       <Toolbar>
         <Navbar />
         <Box style={{ width: '100%' }}>

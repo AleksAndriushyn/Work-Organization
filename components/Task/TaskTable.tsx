@@ -75,7 +75,7 @@ const TaskTable = ({
                   </Button>
                   <Button
                     onClick={() =>
-                      Router.push('/task/[id]', `/task/${task.id}`)
+                      Router.push('/project/[id]', `/project/${task.projectId}`)
                     }
                     style={{ marginLeft: '5px' }}
                     variant="contained"

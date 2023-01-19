@@ -1,25 +1,7 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { server } from '../config'
 
 export async function getTasks() {
-  return await prisma.task.findMany()
-}
-
-export async function getTaskById(itemID: string) {
-  const task = await prisma.task.findUnique({
-    where: { id: itemID },
-  })
-
-  if (!task) {
-    return {
-      props: { hasError: true },
-    }
-  }
-
-  return {
-    props: {
-      task,
-    },
-  }
+  return await fetch(`${server}/api/task/getTasks`, {
+    method: 'GET',
+  }).then(async (res) => await res.json())
 }

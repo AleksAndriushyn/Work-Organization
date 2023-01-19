@@ -1,18 +1,16 @@
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 import CreateButton from '../components/CreateButton'
 import Layout from '../components/Layout'
 import ProjectDialog from '../components/Project/ProjectDialog'
 import ProjectTable from '../components/Project/ProjectTable'
-import {
-  Styles,
-  TableStyle,
-} from '../components/styled-components/global.styled'
 import { saveData } from '../lib/api'
 import { getProjects } from '../lib/projects'
+import { Styles, TableStyle } from '../styled-components/global.styled'
 import { Project } from '../types/types'
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const projectsData = await getProjects()
   return {
     props: {
@@ -31,10 +29,7 @@ const Projects = ({ projectsData }: { projectsData: Project[] }) => {
   }
 
   const onSubmit = async (data: Project) => {
-    const res = await saveData(
-      activeProject ?? data,
-      'project/createProject'
-    )
+    const res = await saveData(activeProject ?? data, 'project/createProject')
     res.type = JSON.parse(res.type)
 
     setIsOpened(false)

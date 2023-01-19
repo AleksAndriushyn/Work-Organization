@@ -1,5 +1,6 @@
 import { Box, MenuItem } from '@mui/material'
 import Link from 'next/link'
+import { MenuItemStyle } from '../styled-components/global.styled'
 
 const MENU_LIST = [
   { text: 'Projects', href: '/Projects' },
@@ -9,13 +10,22 @@ const MENU_LIST = [
 const Navbar = () => {
   return (
     <Box style={{ display: 'flex', textDecoration: 'none' }}>
-      <MenuItem style={{ background: 'none' }}>
-        <Link href={'/'}>Work Organization</Link>
-      </MenuItem>
-      {MENU_LIST.map((menu) => (
-        <MenuItem style={{ background: 'none' }} key={menu.text}>
-          <Link href={menu.href}>{menu.text}</Link>
+      <MenuItemStyle>
+        <MenuItem className="menu-item">
+          <Link className="link" href={'/'}>
+            Work Organization
+          </Link>
         </MenuItem>
+      </MenuItemStyle>
+
+      {MENU_LIST.map((menu) => (
+        <MenuItemStyle key={menu.text}>
+          <MenuItem className="menu-item">
+            <Link className="link" href={menu.href}>
+              {menu.text}
+            </Link>
+          </MenuItem>
+        </MenuItemStyle>
       ))}
     </Box>
   )

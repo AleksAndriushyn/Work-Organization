@@ -1,11 +1,9 @@
-import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import prisma from '../prisma'
 
 type Data = {
   name: string
 }
-
-const prisma = new PrismaClient()
 
 export default async function createProject(
   req: NextApiRequest,

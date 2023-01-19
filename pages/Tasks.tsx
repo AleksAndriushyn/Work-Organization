@@ -1,36 +1,25 @@
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 import CreateButton from '../components/CreateButton'
 import Layout from '../components/Layout'
-import {
-  Styles,
-  TableStyle,
-} from '../components/styled-components/global.styled'
 import TaskDialog from '../components/Task/TaskDialog'
 import TaskTable from '../components/Task/TaskTable'
 import { saveData } from '../lib/api'
-import { getProjects } from '../lib/projects'
 import { getTasks } from '../lib/tasks'
-import { Project, Task } from '../types/types'
+import { Styles, TableStyle } from '../styled-components/global.styled'
+import { Task } from '../types/types'
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const tasksData = await getTasks()
-  const projects = await getProjects()
   return {
     props: {
       tasksData,
-      projects,
     },
   }
 }
 
-const Projects = ({
-  tasksData,
-  projects,
-}: {
-  tasksData: Task[]
-  projects: Project[]
-}) => {
+const Tasks = ({ tasksData }: { tasksData: Task[] }) => {
   const [tasks, setTasks] = useState<Task[]>(tasksData)
   const [isOpened, setIsOpened] = useState<boolean>(false)
   const [activeTask, setActiveTask] = useState<Task | null>(null)
@@ -60,7 +49,7 @@ const Projects = ({
   return (
     <>
       <Head>
-        <title>Projects Page</title>
+        <title>Tasks Page</title>
       </Head>
       <Layout>
         <Styles>
@@ -73,7 +62,6 @@ const Projects = ({
               open={isOpened}
               task={activeTask}
               setTask={setActiveTask}
-              projects={projects}
               onClose={() => {
                 handleClickOpen(false)
                 setActiveTask(null)
@@ -96,4 +84,4 @@ const Projects = ({
   )
 }
 
-export default Projects
+export default Tasks

@@ -14,7 +14,6 @@ const TaskDialog = ({
   onSubmit,
   task,
   setTask,
-  projects,
   project,
 }: {
   open: boolean
@@ -22,7 +21,6 @@ const TaskDialog = ({
   onSubmit: Function
   task: Task | null
   setTask: Function
-  projects: Project[]
   project: Project | null
 }) => {
   return (
@@ -30,7 +28,6 @@ const TaskDialog = ({
       <DialogTitle>Create Task</DialogTitle>
       <DialogContent>
         <TaskForm
-          projects={projects}
           onSubmit={onSubmit}
           task={task}
           setTask={setTask}

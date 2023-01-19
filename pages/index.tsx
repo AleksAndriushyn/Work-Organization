@@ -10,9 +10,7 @@ export default function Home() {
       </Head>
       <Layout>
         <main className={styles.main}>
-          <section className={styles.description}>
-            Project detailed page
-          </section>
+          <section className={styles.description}></section>
         </main>
       </Layout>
     </>

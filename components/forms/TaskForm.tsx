@@ -5,8 +5,9 @@ import {
   Select,
   TextField,
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { getProjects } from '../../lib/projects'
 import { Project, Task } from '../../types/types'
 import Error from '../Error'
 
@@ -14,20 +15,26 @@ const TaskForm = ({
   onSubmit,
   task,
   setTask,
-  projects,
   project,
 }: {
   onSubmit: any
   task: Task | null
   setTask: Function
-  projects: Project[]
   project: Project | null
 }) => {
   const { register, handleSubmit, formState } = useForm()
-  const name = projects.find((project) => project.id === task?.projectId)?.name
+  const [projects, setProjects] = useState<Project[]>([])
+
+  const name = projects.find(
+    (project: Project) => project.id === task?.projectId
+  )?.name
   const [projectName, setProjectName] = useState<string>(
     name ?? project?.name ?? ''
   )
+
+  useEffect(() => {
+    ;(async () => setProjects(await getProjects()))()
+  }, [])
 
   return (
     <form
