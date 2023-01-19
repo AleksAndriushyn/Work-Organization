@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material'
+import { FieldValues, SubmitHandler } from 'react-hook-form'
 import { Project, Task } from '../../types/types'
 import TaskForm from '../forms/TaskForm'
 
@@ -18,7 +19,7 @@ const TaskDialog = ({
 }: {
   open: boolean
   onClose: Function
-  onSubmit: Function
+  onSubmit: SubmitHandler<FieldValues>
   task: Task | null
   setTask: Function
   project: Project | null

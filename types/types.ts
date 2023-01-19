@@ -1,7 +1,6 @@
-import { ParsedUrlQuery } from "querystring"
+import { ParsedUrlQuery } from 'querystring'
 
 export type Type = {
-  id: string
   label: string
   value: string
 }
@@ -9,14 +8,14 @@ export type Type = {
 export type Project = {
   id: string
   name: string
-  type: Type
+  type: Type | string
   tasks?: Task[]
 }
 
-type User = {
-  label: string
-  imgUrl: string
-}
+// type User = {
+//   label: string
+//   imgUrl: string
+// }
 
 export type Task = {
   id: string
@@ -24,7 +23,7 @@ export type Task = {
   type: string
   description: string
   status: string
-  assignee: User
+  assignee: string
   reporter: string
   projectId: string
 }

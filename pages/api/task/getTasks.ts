@@ -1,12 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../prisma'
+import { Task } from '../../../types/types'
+import { prisma } from '../prisma'
 
-type Data = {
-  name: string
-}
 export default async function getTasks(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Task[]>
 ) {
   const tasks: any = await prisma.task.findMany()
   return res.json(tasks)

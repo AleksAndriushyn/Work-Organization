@@ -1,16 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../prisma'
+import { Project } from '../../../types/types'
+import { prisma } from '../prisma'
 
-type Data = {
-  name: string
-}
 export default async function getProjects(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Project[]>
 ) {
-  let projectsData: any = await prisma.project.findMany()
-  projectsData = projectsData.map((el: any) => {
-    el.type = JSON.parse(el.type)
+  let projectsData: Project[] = await prisma.project.findMany()
+  projectsData = projectsData.map((el: Project) => {
+    el.type = JSON.parse(el.type as string)
     return el
   })
   return res.json(projectsData)

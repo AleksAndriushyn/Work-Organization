@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material'
+import { SubmitHandler, FieldValues } from 'react-hook-form'
 import { Project } from '../../types/types'
 import ProjectForm from '../forms/ProjectForm'
 
@@ -17,7 +18,7 @@ const ProjectDialog = ({
 }: {
   open: boolean
   onClose: Function
-  onSubmit: Function
+  onSubmit: SubmitHandler<FieldValues>
   project: Project | null
   setTask: Function
 }) => {

@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
+import { SubmitHandler, FieldValues } from 'react-hook-form'
 import CreateButton from '../components/CreateButton'
 import Layout from '../components/Layout'
 import TaskDialog from '../components/Task/TaskDialog'
@@ -28,7 +29,7 @@ const Tasks = ({ tasksData }: { tasksData: Task[] }) => {
     setIsOpened(data)
   }
 
-  const onSubmit = async (data: Task) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
     const res = await saveData(activeTask ?? data, 'task/createTask')
 
     handleClickOpen(false)

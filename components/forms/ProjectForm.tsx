@@ -1,13 +1,13 @@
 import { InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import { useForm } from 'react-hook-form'
-import { Project } from '../../types/types'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { Project, Type } from '../../types/types'
 
 const ProjectForm = ({
   onSubmit,
   project,
   setProject,
 }: {
-  onSubmit: any
+  onSubmit: SubmitHandler<FieldValues>
   project: Project | null
   setProject: Function
 }) => {
@@ -16,6 +16,7 @@ const ProjectForm = ({
     { label: 'Team Managed', value: 'team-managed' },
     { label: 'Company Managed', value: 'company-managed' },
   ]
+  const type = project?.type as Type
 
   return (
     <form id={'project-form'} onSubmit={handleSubmit(onSubmit)}>
@@ -31,7 +32,7 @@ const ProjectForm = ({
           type="text"
           {...register('name')}
           value={project?.name ?? ''}
-          onChange={(value: any) =>
+          onChange={(value) =>
             setProject((prevState: Project) => ({
               ...prevState,
               name: value.target.value,
@@ -40,17 +41,17 @@ const ProjectForm = ({
         />
         <InputLabel style={{ marginTop: '10px' }}>Type</InputLabel>
         <Select
-          value={project?.type?.value ?? ''}
+          value={type?.value ?? ''}
           onChange={(value) => {
             setProject((prevState: Project) => ({
               ...prevState,
               type: defaultTypes.find(
-                (el: any) => el.value === value.target.value
+                (el: Type) => el.value === value.target.value
               ),
             }))
           }}
         >
-          {defaultTypes.map((type: any, idx: number) => (
+          {defaultTypes.map((type: Type, idx: number) => (
             <MenuItem key={idx} value={type.value}>
               {type.label}
             </MenuItem>
@@ -62,5 +63,4 @@ const ProjectForm = ({
 }
 
 export default ProjectForm
-
 

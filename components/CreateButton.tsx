@@ -1,6 +1,12 @@
 import { Button } from '@mui/material'
 
-const CreateButton = ({ handleClickOpen, text }: any) => {
+const CreateButton = ({
+  handleClickOpen,
+  text,
+}: {
+  handleClickOpen: Function
+  text: string
+}) => {
   return (
     <div style={{ width: '100%' }}>
       <Button

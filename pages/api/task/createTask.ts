@@ -1,18 +1,10 @@
-import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-
-type Data = {
-  name: string
-  type: string
-  description: string
-  projectId: string
-}
-
-const prisma = new PrismaClient()
+import { Task } from '../../../types/types'
+import { prisma } from '../prisma'
 
 export default async function createTask(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Task>
 ) {
   const data = JSON.parse(req.body)
   console.log('data', data)

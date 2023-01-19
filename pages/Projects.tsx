@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
+import { FieldValues, SubmitHandler } from 'react-hook-form'
 import CreateButton from '../components/CreateButton'
 import Layout from '../components/Layout'
 import ProjectDialog from '../components/Project/ProjectDialog'
@@ -28,7 +29,7 @@ const Projects = ({ projectsData }: { projectsData: Project[] }) => {
     setIsOpened(data)
   }
 
-  const onSubmit = async (data: Project) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
     const res = await saveData(activeProject ?? data, 'project/createProject')
     res.type = JSON.parse(res.type)
 

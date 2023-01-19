@@ -1,18 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../prisma'
+import { Project } from '../../../types/types'
+import { prisma } from '../prisma'
 
-type Data = {
-  name: string
-}
 export default async function getProjectById(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Project | null>
 ) {
-  const { id } = req.query
-  const project = await prisma.project.findUnique({
-    where: { id },
+  const { id } = req.query as Partial<{ [key: string]: string | string[] }>
+  const project = (await prisma.project.findUnique({
+    where: { id:id as string },
     include: { tasks: true },
-  })
+  })) as Project | null
 
   return res.json(project)
 }

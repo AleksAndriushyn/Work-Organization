@@ -7,9 +7,13 @@ import {
   MenuList,
   Popper,
 } from '@mui/material'
+import { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
 
-const UserPopup = (props: { session: any; anchorEl: null | HTMLElement }) => {
+const UserPopup = (props: {
+  session: Session | null
+  anchorEl: null | HTMLElement
+}) => {
   const { session, anchorEl } = props
   const menuOpen = Boolean(anchorEl)
   const id = menuOpen ? 'user-popper' : undefined

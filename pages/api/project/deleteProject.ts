@@ -1,13 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../prisma'
-
-type Data = {
-  name: string
-}
+import { Project } from '../../../types/types'
+import { prisma } from '../prisma'
 
 export default async function deleteProject(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Project>
 ) {
   const id = JSON.parse(req.body)
   const deleteProject = await prisma.project.delete({

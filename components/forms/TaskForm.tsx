@@ -3,10 +3,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField,
+  TextField
 } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { getProjects } from '../../lib/projects'
 import { Project, Task } from '../../types/types'
 import Error from '../Error'
@@ -17,7 +17,7 @@ const TaskForm = ({
   setTask,
   project,
 }: {
-  onSubmit: any
+  onSubmit: SubmitHandler<FieldValues>
   task: Task | null
   setTask: Function
   project: Project | null
@@ -52,7 +52,7 @@ const TaskForm = ({
         type="text"
         {...register('name', { required: 'Name is required.' })}
         value={task?.name ?? ''}
-        onChange={(value: any) =>
+        onChange={(value) =>
           setTask((prevState: Task) => ({
             ...prevState,
             name: value.target.value,
@@ -65,7 +65,7 @@ const TaskForm = ({
         type={'text'}
         {...register('type', { required: 'Type is required.' })}
         value={task?.type ?? ''}
-        onChange={(value: any) =>
+        onChange={(value) =>
           setTask((prevState: Task) => ({
             ...prevState,
             type: value.target.value,
@@ -105,7 +105,7 @@ const TaskForm = ({
         type="text"
         {...register('description')}
         value={task?.description ?? ''}
-        onChange={(value: any) =>
+        onChange={(value) =>
           setTask((prevState: Task) => ({
             ...prevState,
             description: value.target.value,
@@ -117,4 +117,5 @@ const TaskForm = ({
 }
 
 export default TaskForm
+
 

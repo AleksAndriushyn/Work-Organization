@@ -1,11 +1,12 @@
 import { AppBar, Box, Button, Toolbar, Tooltip } from '@mui/material'
+import { Session } from 'next-auth'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Navbar from './Navbar'
 
 const Header = (props: {
   anchorEl: null | HTMLElement
-  session: any
+  session: Session | null
   setAnchorEl: Function
 }) => {
   const { anchorEl, session, setAnchorEl } = props

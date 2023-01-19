@@ -1,14 +1,10 @@
-import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { Task } from '../../../types/types'
+import { prisma } from '../prisma'
 
-type Data = {
-  name: string
-}
-
-const prisma = new PrismaClient()
 export default async function deleteTask(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Task>
 ) {
   const id = JSON.parse(req.body)
   const deleteTask = await prisma.task.delete({

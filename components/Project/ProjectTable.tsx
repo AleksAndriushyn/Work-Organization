@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import Router from 'next/router'
 import { onDeleteItem } from '../../lib/api'
-import { Project } from '../../types/types'
+import { Project, Type } from '../../types/types'
 
 const setActiveProject = (
   setOpened: Function,
@@ -32,7 +32,6 @@ const ProjectTable = ({
   setProject: Function
   setOpened: Function
 }) => {
-
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="project table">
@@ -50,47 +49,50 @@ const ProjectTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {projects.map((project: Project) => (
-            <TableRow key={project.name}>
-              <TableCell>
-                <Button
-                  onClick={() =>
-                    setActiveProject(setOpened, setProject, project)
-                  }
-                >
-                  <b>{project.name}</b>
-                </Button>
-              </TableCell>
-              <TableCell>{project?.type?.label}</TableCell>
-              <TableCell>
-                <ButtonGroup>
+          {projects.map((project: Project) => {
+            const type = project?.type as Type
+            return (
+              <TableRow key={project.name}>
+                <TableCell>
                   <Button
-                    color="error"
-                    variant="contained"
-                    onClick={async () =>
-                      await onDeleteItem(
-                        project.id,
-                        setProjects,
-                        projects,
-                        'project/deleteProject'
-                      )
-                    }
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    style={{ marginLeft: '5px' }}
                     onClick={() =>
-                      Router.push('/project/[id]', `/project/${project.id}`)
+                      setActiveProject(setOpened, setProject, project)
                     }
-                    variant="contained"
                   >
-                    View
+                    <b>{project.name}</b>
                   </Button>
-                </ButtonGroup>
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+                <TableCell>{type.label}</TableCell>
+                <TableCell>
+                  <ButtonGroup>
+                    <Button
+                      color="error"
+                      variant="contained"
+                      onClick={async () =>
+                        await onDeleteItem(
+                          project.id,
+                          setProjects,
+                          projects,
+                          'project/deleteProject'
+                        )
+                      }
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      style={{ marginLeft: '5px' }}
+                      onClick={() =>
+                        Router.push('/project/[id]', `/project/${project.id}`)
+                      }
+                      variant="contained"
+                    >
+                      View
+                    </Button>
+                  </ButtonGroup>
+                </TableCell>
+              </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </TableContainer>
