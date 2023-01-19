@@ -6,6 +6,6 @@ export default async function getTasks(
   req: NextApiRequest,
   res: NextApiResponse<Task[]>
 ) {
-  const tasks: any = await prisma.task.findMany()
+  const tasks = await prisma.task.findMany()
   return res.json(tasks)
 }
