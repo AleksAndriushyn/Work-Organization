@@ -16,6 +16,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/getUser.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/getUser.ts", "pages/api/prisma.js"],
   "exclude": ["node_modules"]
 }
