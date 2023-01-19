@@ -51,7 +51,7 @@ const Projects = ({ projectsData }: { projectsData: Project[] }) => {
   return (
     <>
       <Head>
-        <title>Projects Page gfgfgf</title>
+        <title>Projects Page</title>
       </Head>
       <Layout>
         <Styles>
