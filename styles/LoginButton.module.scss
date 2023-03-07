@@ -1,0 +1,12 @@
+.loginButton {
+    float: right;
+    height: 2rem;
+    color: white;
+    border-color: white;
+}
+
+.loginButton:hover {
+    color: black;
+    background-color: white;
+    transition: 0.3s ease all;
+}

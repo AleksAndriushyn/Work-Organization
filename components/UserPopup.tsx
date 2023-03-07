@@ -22,9 +22,8 @@ const UserPopup = (props: {
       <Box
         sx={{
           border: 1,
-          p: 1,
           bgcolor: 'background.paper',
-          marginTop: '10px',
+          margin: '20px 10px',
         }}
       >
         <MenuList>

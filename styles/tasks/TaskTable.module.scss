@@ -1,0 +1,11 @@
+@use "../common.scss" as common;
+
+@include common.table;
+@include common.name;
+@include common.buttonGroup;
+
+.task {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}

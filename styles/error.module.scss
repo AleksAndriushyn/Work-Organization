@@ -1,0 +1,7 @@
+.error {
+    color: #bf1650;
+}
+.error::before {
+    display: inline;
+    content: "⚠ ";
+}

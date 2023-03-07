@@ -12,20 +12,35 @@ export type Project = {
   tasks?: Task[]
 }
 
-// type User = {
-//   label: string
-//   imgUrl: string
-// }
+export type User = {
+  id: string
+  name: string
+  image: string
+  email?: string
+  tasks: Task[]
+}
+
+export type Status = {
+  label: string
+  value: string
+}
+
+export type Comment = {
+  id: string
+  message: string
+  userId: string
+}
 
 export type Task = {
   id: string
   name: string
-  type: string
+  type: Type | string
   description: string
-  status: string
-  assignee: string
-  reporter: string
+  status: Status | string
+  assignee: User | string
+  reporter: User | string
   projectId: string
+  comments: Comment[] | string
 }
 
 export interface IParams extends ParsedUrlQuery {

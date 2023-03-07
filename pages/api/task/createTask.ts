@@ -7,23 +7,38 @@ export default async function createTask(
   res: NextApiResponse<Task>
 ) {
   const data = JSON.parse(req.body)
-  console.log('data', data)
+  data.assignee = JSON.stringify(data.assignee)
+  data.reporter = JSON.stringify(data.reporter)
+  data.status = JSON.stringify(
+    data.id
+      ? data.status
+      : {
+          label: 'To Do',
+          value: 'to-do',
+          color: 'secondary',
+        }
+  )
+
+  data.type = JSON.stringify(data.type)
   let savedTask
 
-  if (data.id) {
+  if (data?.id) {
     savedTask = await prisma.task.update({
       where: {
         id: data.id,
       },
       data,
     })
-    return res.json(savedTask)
+  } else {
+    savedTask = await prisma.task.create({
+      data,
+    })
   }
 
-  savedTask = await prisma.task.create({
-    data,
-  })
-
-  return res.json(savedTask)
+  console.log(savedTask)
+  return res.json(savedTask as Task)
 }
+
+
+
 

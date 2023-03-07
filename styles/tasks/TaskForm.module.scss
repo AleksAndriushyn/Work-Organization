@@ -1,0 +1,15 @@
+@use "../common.scss" as common;
+
+.form {
+    @include common.form();
+    .form_group {
+        @include common.commonFlex();
+    }
+}
+
+.type,
+.user {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

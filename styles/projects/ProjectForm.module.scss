@@ -1,0 +1,5 @@
+@use "../common.scss" as common;
+
+.form {
+    @include common.form();
+}

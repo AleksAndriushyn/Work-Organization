@@ -1,0 +1,28 @@
+@mixin statuses($background) {
+    height: 100%;
+    border-radius: 5px;
+    flex: 1 0;
+    background: $background;
+}
+
+@mixin header($background) {
+    font-size: 18px;
+    text-align: center;
+    background: $background;
+}
+
+.statuses {
+    @include statuses(#f4f5f7);
+}
+
+.dragged {
+    @include statuses(lightblue);
+}
+
+.header {
+    @include header(#f4f5f7);
+}
+
+.header_dragged {
+    @include header(lightblue);
+}

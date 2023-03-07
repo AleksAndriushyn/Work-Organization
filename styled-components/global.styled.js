@@ -1,25 +1,9 @@
 import styled from 'styled-components'
 
-export const Styles = styled.div`
+export const TaskStyles = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-`
-
-export const TableStyle = styled.div`
-  padding: 2rem 5rem 0 5rem;
-
-  width: 100%;
-  table {
-    border: 1px solid #e0e0e0;
-
-    th,
-    td {
-      padding: 1rem;
-      text-align: center;
-    }
-  }
+  margin: 3em 0 0 10em;
 `
 
 export const ErrorStyle = styled.p`
@@ -33,9 +17,20 @@ export const ErrorStyle = styled.p`
 export const MenuItemStyle = styled.div`
   .menu-item {
     background: none;
+    display: flex;
+    align-items: center;
+    color: white;
   }
 
-  &:hover .link {
-    color: yellow;
+  &:hover .menu-item {
+    background: white;
+    color: black;
+    border-radius: 4px;
+  }
+`
+
+export const ListItemTextStyle = styled.div`
+  &:hover {
+    text-decoration: underline;
   }
 `

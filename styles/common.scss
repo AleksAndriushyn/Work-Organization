@@ -1,0 +1,57 @@
+@mixin table {
+    .table {
+        padding: 2rem 5rem 0 5rem;
+
+        width: 60rem;
+        table {
+            border: 1px solid #e0e0e0;
+
+            th,
+            td {
+                padding: 1rem;
+                text-align: center;
+            }
+        }
+    }
+}
+
+@mixin pageStyle {
+    .page_container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 60px;
+    }
+}
+
+@mixin commonFlex {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@mixin form {
+    @include commonFlex();
+    margin-top: 5px;
+}
+
+@mixin textOverflow {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+@mixin name {
+    .name {
+        width: 13rem;
+        @include textOverflow;
+        cursor: pointer;
+    }
+}
+
+@mixin buttonGroup {
+    .button_group {
+        gap: 5px;
+    }
+}

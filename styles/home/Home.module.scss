@@ -1,0 +1,26 @@
+@use "./common.scss" as common;
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  padding: 6rem;
+  min-height: 100vh;
+
+  .project_select_block {
+    width: 100%;
+
+    .project_select {
+      width: 20%;
+    }
+  }
+
+  .board {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    z-index: 0;
+  }
+}

@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
@@ -16,13 +16,31 @@ model Project {
 }
 
 model Task {
-  id          String  @id @default(cuid())
-  name        String  @default("")
-  type        String  @default("")
-  description String  @default("")
-  status      String  @default("")
-  assignee    String  @default("")
-  reporter    String  @default("")
-  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId   String  @default("")
+  id          String    @id @default(cuid())
+  name        String    @default("")
+  type        String    @default("")
+  description String    @default("")
+  status      String    @default("")
+  assignee    String    @default("")
+  reporter    String    @default("")
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String    @default("")
+  comments    Comment[]
+}
+
+model User {
+  id       String    @id @default(cuid())
+  name     String    @default("")
+  image    String    @default("")
+  email    String    @default("")
+  comments Comment[]
+}
+
+model Comment {
+  id      String @id @default(cuid())
+  message String @default("")
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String @default("")
+  task    Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId  String @default("")
 }

@@ -12,5 +12,5 @@ export default async function deleteTask(
       id,
     },
   })
-  res.json(deleteTask)
+  res.json(deleteTask as Task)
 }

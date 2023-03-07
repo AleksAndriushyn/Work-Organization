@@ -1,6 +1,14 @@
-import { InputLabel, MenuItem, Select, TextField } from '@mui/material'
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import styles from '../../styles/projects/ProjectForm.module.scss'
 import { Project, Type } from '../../types/types'
+import Error from '../Error'
 
 const ProjectForm = ({
   onSubmit,
@@ -11,7 +19,7 @@ const ProjectForm = ({
   project: Project | null
   setProject: Function
 }) => {
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, formState } = useForm()
   const defaultTypes = [
     { label: 'Team Managed', value: 'team-managed' },
     { label: 'Company Managed', value: 'company-managed' },
@@ -19,29 +27,33 @@ const ProjectForm = ({
   const type = project?.type as Type
 
   return (
-    <form id={'project-form'} onSubmit={handleSubmit(onSubmit)}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <InputLabel>Name</InputLabel>
-        <TextField
-          autoFocus
-          type="text"
-          {...register('name')}
-          value={project?.name ?? ''}
-          onChange={(value) =>
-            setProject((prevState: Project) => ({
-              ...prevState,
-              name: value.target.value,
-            }))
-          }
-        />
-        <InputLabel style={{ marginTop: '10px' }}>Type</InputLabel>
+    <form
+      className={styles.form}
+      id="project-form"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <TextField
+        label="Name"
+        autoFocus
+        type="text"
+        {...register('name', { required: 'Name is required.' })}
+        value={project?.name ?? ''}
+        onChange={(value) =>
+          setProject((prevState: Project) => ({
+            ...prevState,
+            name: value.target.value,
+          }))
+        }
+      />
+      <Error formState={formState} name="name" />
+      <FormControl>
+        <InputLabel>Select type</InputLabel>
         <Select
+          label="Select type"
           value={type?.value ?? ''}
+          {...register('type', {
+            required: 'Type is required.',
+          })}
           onChange={(value) => {
             setProject((prevState: Project) => ({
               ...prevState,
@@ -57,7 +69,8 @@ const ProjectForm = ({
             </MenuItem>
           ))}
         </Select>
-      </div>
+      </FormControl>
+      <Error formState={formState} name="type" />
     </form>
   )
 }

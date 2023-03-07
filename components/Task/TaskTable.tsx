@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonGroup,
   Table,
@@ -7,18 +8,19 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
+  Typography,
 } from '@mui/material'
 import Router from 'next/router'
 import { onDeleteItem } from '../../lib/api'
-import { Task } from '../../types/types'
+import styles from '../../styles/tasks/TaskTable.module.scss'
+import { Task, Type, User } from '../../types/types'
+import RenderUser from '../RenderUser'
+import showIcon from '../showIcon'
 
-const setActiveTask = (
-  setOpened: Function,
-  setTask: Function,
-  project: Task
-) => {
+const setActiveTask = (setOpened: Function, setTask: Function, task: Task) => {
   setOpened()
-  setTask(project)
+  setTask(task)
 }
 
 const TaskTable = ({
@@ -33,62 +35,82 @@ const TaskTable = ({
   setOpened: Function
 }) => {
   return (
-    <TableContainer>
-      <Table sx={{ minWidth: 650 }} aria-label="task table">
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <b>Name</b>
-            </TableCell>
-            <TableCell>
-              <b>Type</b>
-            </TableCell>
-            <TableCell>
-              <b>Actions</b>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tasks.map((task: Task) => (
-            <TableRow key={task.id}>
+    <Box className={styles.table}>
+      <TableContainer>
+        <Table aria-label="task table">
+          <TableHead>
+            <TableRow>
               <TableCell>
-                <Button onClick={() => setActiveTask(setOpened, setTask, task)}>
-                  <b>{task.name}</b>
-                </Button>
+                <b>Name</b>
               </TableCell>
-              <TableCell>{task?.type}</TableCell>
               <TableCell>
-                <ButtonGroup>
-                  <Button
-                    color="error"
-                    variant="contained"
-                    onClick={async () =>
-                      await onDeleteItem(
-                        task.id,
-                        setTasks,
-                        tasks,
-                        'task/deleteTask'
-                      )
-                    }
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    onClick={() =>
-                      Router.push('/project/[id]', `/project/${task.projectId}`)
-                    }
-                    style={{ marginLeft: '5px' }}
-                    variant="contained"
-                  >
-                    View
-                  </Button>
-                </ButtonGroup>
+                <b>Assignee</b>
+              </TableCell>
+              <TableCell>
+                <b>Actions</b>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {tasks.map((task: Task) => {
+              const type = task.type as Type
+              const assignee = task.assignee as User
+              return (
+                <TableRow key={task.id}>
+                  <TableCell width={208}>
+                    <Tooltip title={task.name}>
+                      <Box className={styles.task}>
+                        {showIcon(type.label)}
+                        <Typography
+                          className={styles.name}
+                          onClick={() =>
+                            setActiveTask(setOpened, setTask, task)
+                          }
+                        >
+                          {task.name}
+                        </Typography>
+                      </Box>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell>
+                    <RenderUser name={assignee.name} image={assignee.image} />
+                  </TableCell>
+                  <TableCell>
+                    <ButtonGroup className={styles.button_group}>
+                      <Button
+                        color="error"
+                        variant="contained"
+                        onClick={async () =>
+                          await onDeleteItem(
+                            task.id,
+                            setTasks,
+                            tasks,
+                            'task/deleteTask'
+                          )
+                        }
+                      >
+                        Delete
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          Router.push(
+                            '/project/[id]',
+                            `/project/${task.projectId}`
+                          )
+                        }
+                        variant="contained"
+                      >
+                        View
+                      </Button>
+                    </ButtonGroup>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   )
 }
 
