@@ -32,6 +32,7 @@ const setStatus = (droppableId: string) => {
 }
 
 const Home = ({ projectsData }: { projectsData: Project[] }) => {
+  console.log(projectsData)
   const [project, setProject] = useState<Project>(projectsData[0])
   const [tasks, setTasks] = useState<Task[]>(project?.tasks as Task[])
 
