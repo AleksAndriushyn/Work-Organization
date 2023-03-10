@@ -70,12 +70,12 @@ const Home = ({ projectsData }: { projectsData: Project[] }) => {
   useEffect(() => {
     ;(async () => {
       setTasks(
-        (await getProjectById(project.id as string).then(
+        (await getProjectById(project?.id as string).then(
           ({ props: { project } }) => project?.tasks
         )) as Task[]
       )
     })()
-  }, [project.id])
+  }, [project?.id])
 
   return (
     <>
@@ -87,11 +87,12 @@ const Home = ({ projectsData }: { projectsData: Project[] }) => {
           <main className={styles.main}>
             <section className={styles.project_select_block}>
               <FormControl fullWidth>
-                <InputLabel style={{ zIndex: 0 }}>Select project</InputLabel>
+                <InputLabel style={{ zIndex: 0 }}>{!project ? 'Create a project' : 'Select project'}</InputLabel>
                 <Select
                   className={styles.project_select}
-                  value={project.name ?? ''}
+                  value={project?.name ?? ''}
                   label="Select project"
+                  disabled={!project}
                   onChange={(e) => {
                     setProject(
                       projectsData.find(
@@ -101,11 +102,8 @@ const Home = ({ projectsData }: { projectsData: Project[] }) => {
                   }}
                 >
                   {projectsData.map((project: Project) => (
-                    <MenuItem
-                      key={project.id}
-                      value={project.name}
-                    >
-                      {project.name}
+                    <MenuItem key={project?.id} value={project?.name}>
+                      {project?.name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -144,4 +142,8 @@ const Home = ({ projectsData }: { projectsData: Project[] }) => {
 }
 
 export default Home
+
+
+
+
 
