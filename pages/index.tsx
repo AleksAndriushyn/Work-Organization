@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
@@ -11,7 +11,7 @@ import { getProjectById, getProjects } from '../lib/projects'
 import styles from '../styles/home/Home.module.scss'
 import { Project, Status, Task } from '../types/types'
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const projectsData = await getProjects()
   return {
     props: {

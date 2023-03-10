@@ -12,5 +12,5 @@ export default async function deleteProject(
       id,
     },
   })
-  res.json(deleteProject)
+  res.json(deleteProject as Project)
 }
