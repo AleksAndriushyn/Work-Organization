@@ -5,14 +5,14 @@ import Head from 'next/head'
 import { useState } from 'react'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
 import Layout from '../components/Layout'
-import ProjectTable from '../components/project/ProjectTable'
+import CreateButton from '../components/custom-components/CreateButton'
 import ProjectForm from '../components/forms/ProjectForm'
 import CustomModal from '../components/modal/CustomModal'
+import ProjectTable from '../components/project/ProjectTable'
 import { saveData } from '../lib/api'
 import { getProjects } from '../lib/projects'
 import styles from '../styles/Page-style.module.scss'
 import { Project } from '../types/types'
-import CreateButton from '../components/custom-components/CreateButton'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const projectsData = await getProjects()
