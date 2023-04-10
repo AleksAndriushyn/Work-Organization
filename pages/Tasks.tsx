@@ -17,7 +17,7 @@ import { saveData } from '../lib/api'
 import { getProjects } from '../lib/projects'
 import { getTasks } from '../lib/tasks'
 import { getTemplates } from '../lib/templates'
-import styles from '../styles/Page-style.module.scss'
+import styles from '../styles/PageStyle.module.scss'
 import { Project, Task, Template, User } from '../types/types'
 
 export const getServerSideProps: GetServerSideProps = async () => {

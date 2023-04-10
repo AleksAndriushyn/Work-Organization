@@ -8,10 +8,10 @@ import Layout from '../components/Layout'
 import CreateButton from '../components/custom-components/CreateButton'
 import ProjectForm from '../components/forms/ProjectForm'
 import CustomModal from '../components/modal/CustomModal'
-import ProjectTable from '../components/Project/ProjectTable'
+import ProjectTable from '../components/project/ProjectTable'
 import { saveData } from '../lib/api'
 import { getProjects } from '../lib/projects'
-import styles from '../styles/Page-style.module.scss'
+import styles from '../styles/PageStyle.module.scss'
 import { Project } from '../types/types'
 
 export const getServerSideProps: GetServerSideProps = async () => {
