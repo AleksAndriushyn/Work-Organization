@@ -76,7 +76,7 @@ const TaskTable = ({
         )
       : true
     const assigneeMatch = filters.assignee
-      ? task.assignee.id === filters.assignee.id
+      ? (task.assignee as User).id === filters.assignee.id
       : true
     return taskNameMatch && projectMatch && assigneeMatch
   }

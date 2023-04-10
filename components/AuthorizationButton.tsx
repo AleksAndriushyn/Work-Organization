@@ -1,14 +1,21 @@
 import { Button } from '@mui/material'
 import styles from '../styles/AuthorizationButton.module.scss'
-
+type ColorType =
+  | 'inherit'
+  | 'primary'
+  | 'secondary'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning'
 const AuthorizationButton = ({
   color,
   href,
-  children
+  children,
 }: {
-  color?: string
+  color?: ColorType
   href: string
-  children:string
+  children: string
 }) => {
   return (
     <Button

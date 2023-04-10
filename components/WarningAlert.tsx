@@ -1,9 +1,14 @@
 import { Alert } from '@mui/material'
-import LoginButton from './AuthorizationButton'
+import AuthorizationButton from './AuthorizationButton'
 
 const WarningAlert = () => {
   return (
-    <Alert severity="warning" action={<LoginButton />}>
+    <Alert
+      severity="warning"
+      action={
+        <AuthorizationButton href="/api/auth/login">Login</AuthorizationButton>
+      }
+    >
       You need to authorize first!
     </Alert>
   )

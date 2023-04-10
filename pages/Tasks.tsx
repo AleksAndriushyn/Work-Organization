@@ -4,11 +4,12 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
-import FilterInputs from '../components/Task/FilterInputs'
 import Layout from '../components/Layout'
 import ProjectWarningAlert from '../components/ProjectWarningAlert'
+import FilterInputs from '../components/Task/FilterInputs'
 import TaskTable from '../components/Task/TaskTable'
 import TemplateOptionsPopper from '../components/TemplateOptionsPopper'
+import CreateButton from '../components/custom-components/CreateButton'
 import TaskForm from '../components/forms/TaskForm'
 import CustomModal from '../components/modal/CustomModal'
 import TemplateModal from '../components/modal/TemplateModal'
@@ -18,7 +19,6 @@ import { getTasks } from '../lib/tasks'
 import { getTemplates } from '../lib/templates'
 import styles from '../styles/Page-style.module.scss'
 import { Project, Task, Template, User } from '../types/types'
-import CreateButton from '../components/custom-components/CreateButton'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const tasksData = await getTasks()
@@ -107,7 +107,7 @@ const Tasks = ({
       image: user?.picture,
       email: user?.email,
     }
-    if (activeTask) activeTask.reporter = reporter
+    if (activeTask) activeTask.reporter = reporter as User
     const res = await saveData(activeTask, 'task/createTask')
     return setTaskProperties(res)
   }

@@ -43,7 +43,7 @@ const Header = () => {
               />
             </Tooltip>
           ) : (
-            <AuthorizationButton href={'/api/auth/login'}>
+            <AuthorizationButton href='/api/auth/login'>
               Login
             </AuthorizationButton>
           )}

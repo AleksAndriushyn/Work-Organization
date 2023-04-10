@@ -107,11 +107,14 @@ const Project = ({
 
     if (isSavingTemplate) {
       if (newTemplate) {
+        let templData = null
         if (newTemplate.id) {
-          delete newTemplate.id
+          const {id, ...other} = newTemplate
+          console.log(id)
+          templData = {...other}
         }
         const savedTemplate = await saveData(
-          newTemplate,
+          templData,
           'template/createTemplate'
         )
         setTemplates((prevTemplates) => [

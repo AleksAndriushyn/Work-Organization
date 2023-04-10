@@ -17,7 +17,7 @@ export type User = {
   name: string
   image: string
   email?: string
-  tasks: Task[]
+  tasks?: Task[]
 }
 
 export type Status = {

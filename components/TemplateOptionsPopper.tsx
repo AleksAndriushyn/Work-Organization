@@ -37,6 +37,7 @@ const TemplateOptionsPopper = ({
 
   const setTempl = (templ: Template) => {
     const { id, templateName, ...template } = templ
+    console.log(id, templateName)
 
     if (task?.id) {
       templ.id = task.id
