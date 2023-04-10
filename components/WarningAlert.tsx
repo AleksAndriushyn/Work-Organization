@@ -1,5 +1,5 @@
 import { Alert } from '@mui/material'
-import LoginButton from './LoginButton'
+import LoginButton from './AuthorizationButton'
 
 const WarningAlert = () => {
   return (

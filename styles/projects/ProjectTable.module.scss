@@ -1,5 +1,9 @@
 @use "../common.scss" as common;
 
 @include common.table;
-@include common.name;
 @include common.buttonGroup;
+@include common.name;
+
+.project:hover {
+    text-decoration: underline;
+}

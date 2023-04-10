@@ -5,6 +5,17 @@
     .form_group {
         @include common.commonFlex();
     }
+    width: 29rem;
+    .checkbox_block {
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+
+        .multiple_block {
+            display: flex;
+            align-items: center;
+        }
+    }
 }
 
 .type,

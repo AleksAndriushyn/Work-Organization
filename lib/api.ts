@@ -1,3 +1,5 @@
+import { Project, Task } from './../types/types'
+
 export const saveData = async (formData: any, url: string) => {
   const resp = await fetch(`/api/${url}`, {
     method: 'POST',
@@ -10,13 +12,13 @@ export const onDeleteItem = async (
   id: string,
   setItems: Function,
   items: any,
-  url:string
+  url: string
 ) => {
   const resp = await fetch(`/api/${url}`, {
     method: 'DELETE',
     body: JSON.stringify(id),
   })
 
-  setItems(items.filter((el: any) => el.id !== id))
+  setItems(items.filter((el: Task | Project) => el.id !== id))
   return await resp.json()
 }

@@ -1,4 +1,4 @@
-@use "./common.scss" as common;
+@use "../common.scss" as common;
 
 .main {
   display: flex;
@@ -12,7 +12,12 @@
     width: 100%;
 
     .project_select {
-      width: 20%;
+      width: 15rem;
+
+      .project_name {
+        width: 13rem;
+        @include common.textOverflow();
+      }
     }
   }
 

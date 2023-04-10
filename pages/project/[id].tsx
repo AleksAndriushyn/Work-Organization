@@ -1,21 +1,37 @@
+import { useUser } from '@auth0/nextjs-auth0/client'
 import { GetServerSideProps } from 'next'
-import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import Content from '../../components/Content'
-import TaskForm from '../../components/forms/TaskForm'
 import Layout from '../../components/Layout'
+import Content from '../../components/Task/task-page/Content'
+import TemplateOptionsPopper from '../../components/TemplateOptionsPopper'
+import TaskForm from '../../components/forms/TaskForm'
 import CustomModal from '../../components/modal/CustomModal'
+import TemplateModal from '../../components/modal/TemplateModal'
 import { saveData } from '../../lib/api'
 import { getProjectById } from '../../lib/projects'
-import { IParams, Project, Task, User } from '../../types/types'
+import { getTemplates } from '../../lib/templates'
+import { IParams, Project, Task, Template, User } from '../../types/types'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params as IParams
-  return await getProjectById(id)
+  const templatesData = await getTemplates()
+  const project = await getProjectById(id)
+  return {
+    props: {
+      project,
+      templatesData,
+    },
+  }
 }
 
-const Project = ({ project }: { project: Project }) => {
+const Project = ({
+  project,
+  templatesData,
+}: {
+  project: Project
+  templatesData: Template[]
+}) => {
   const [proj, setProject] = useState<Project>(project)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [task, setTask] = useState<Task | null>(null)
@@ -23,55 +39,141 @@ const Project = ({ project }: { project: Project }) => {
     proj.tasks ? proj.tasks[0] : null
   )
   const [activeTaskIndex, setActiveTaskIndex] = useState<number>(0)
-  const { data: session } = useSession()
+  const { user } = useUser()
   const [isError, setIsError] = useState(false)
+  const [isMultiple, setIsMultiple] = useState(false)
+  const [tasksCount, setTasksCount] = useState(2)
+  const [isSavingTemplate, setIsSavingTemplate] = useState(false)
+  const [isSelectTemplateOpen, setIsSelectTemplateOpen] = useState(false)
+  const [templates, setTemplates] = useState<Template[]>(templatesData)
+  const [template, setTemplate] = useState<Template | null>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
+  const [newTemplate, setNewTemplate] = useState<Template | null>(null)
+  const optionsOpen = Boolean(anchorEl)
+
+  const setTaskProperties = (task: Task): Task => ({
+    ...task,
+    type: JSON.parse(task.type as string),
+    assignee: JSON.parse(task.assignee as string),
+    reporter: JSON.parse(task.reporter as string),
+    status: JSON.parse(task.status as string),
+  })
+
+  const createTask = async (): Promise<Task> => {
+    const data = task ?? activeTask
+    const reporter = {
+      name: user?.name,
+      image: user?.picture,
+      email: user?.email,
+    }
+    if (data) {
+      data.projectId = proj.id
+      data.reporter = reporter as User
+    }
+
+    const res = await saveData(data, 'task/createTask')
+    return setTaskProperties(res)
+  }
+
+  const updateProjectTasks = (newTask: Task): Project => {
+    const tasks = proj.tasks ? [...proj.tasks] : []
+    const index = tasks?.findIndex((task) => task.id === newTask.id) as number
+    if (index >= 0) {
+      tasks[index] = newTask
+    } else {
+      tasks.push(newTask)
+    }
+    return {
+      ...proj,
+      tasks,
+    }
+  }
+
+  const setTemplateProperties = (template: Template): Template => ({
+    ...template,
+    type: JSON.parse(template.type as string),
+    assignee: JSON.parse(template.assignee as string),
+  })
 
   const onSubmit = async () => {
-    if (!session) {
+    if (!user) {
       setIsError(true)
       return false
     }
-    if (task) {
-      task.projectId = proj.id
-      task.reporter = session?.user as User
-    }
-    const res = await saveData(task ?? activeTask, 'task/createTask')
+
     setIsOpen(false)
-    res.assignee = JSON.parse(res.assignee)
-    res.status = JSON.parse(res.status)
-    res.type = JSON.parse(res.type)
-    res.reporter = JSON.parse(res.reporter)
+    let res: Task | null = null
 
-    if (proj.tasks?.findIndex((t) => t.id === res.id) === -1)
-      proj.tasks?.push(res)
-    else
-      setProject((prevState) => ({
-        ...prevState,
-        tasks: proj.tasks?.map((t) => {
-          if (t.id === res.id) {
-            return (t = res)
-          }
-          return t
-        }),
-      }))
+    if (isSavingTemplate) {
+      if (newTemplate) {
+        if (newTemplate.id) {
+          delete newTemplate.id
+        }
+        const savedTemplate = await saveData(
+          newTemplate,
+          'template/createTemplate'
+        )
+        setTemplates((prevTemplates) => [
+          ...prevTemplates,
+          setTemplateProperties(savedTemplate),
+        ])
+      }
+      if (!newTemplate) {
+        setNewTemplate((prevState: any) => ({
+          ...prevState,
+          ...activeTask,
+        }))
+        return
+      }
+    }
 
-    setTask(null)
+    if (isMultiple) {
+      const newTasks = []
+
+      for (let i = 0; i < tasksCount; i++) {
+        res = await createTask()
+        newTasks.push(res)
+      }
+
+      const updatedTasks = proj?.tasks?.concat(newTasks)
+      setProject({
+        ...proj,
+        tasks: updatedTasks,
+      })
+      setActiveTaskIndex(
+        updatedTasks?.findIndex((el) => el.id === res?.id) as number
+      )
+      setTasksCount(0)
+      setIsMultiple(false)
+    } else {
+      res = await createTask()
+      const updatedProject = updateProjectTasks(res)
+      setProject(updatedProject)
+      setActiveTaskIndex(
+        updatedProject?.tasks?.findIndex((el) => el.id === res?.id) as number
+      )
+    }
     setActiveTask(res)
-    setActiveTaskIndex(
-      project?.tasks?.findIndex((el) => el.id === res.id) as number
-    )
+    setTask(null)
+    setIsSelectTemplateOpen(false)
+    setIsSavingTemplate(false)
+    setNewTemplate(null)
+    setIsTemplateModalOpen(false)
+    setAnchorEl(null)
   }
 
   useEffect(() => {
     ;(async () => {
-      setProject(
-        (await getProjectById(project.id).then(
-          ({ props: { project } }) => project
-        )) as Project
-      )
+      const fetchedProject = await getProjectById(project.id)
+      setProject(fetchedProject)
+      if (fetchedProject.tasks) setActiveTask(fetchedProject.tasks[0])
     })()
-    if (project.tasks) setActiveTask(project.tasks[0])
   }, [project.id])
+
+  useEffect(() => {
+    if (project.tasks) setActiveTask(project.tasks[0])
+  }, [project.tasks])
 
   return (
     <>
@@ -80,6 +182,7 @@ const Project = ({ project }: { project: Project }) => {
       </Head>
       <Layout>
         <Content
+          setProject={setProject}
           activeTask={activeTask}
           setActiveTask={setActiveTask}
           project={proj}
@@ -90,21 +193,62 @@ const Project = ({ project }: { project: Project }) => {
         />
       </Layout>
       <CustomModal
+        openTemplateModal={() => {
+          setIsTemplateModalOpen(true)
+          setAnchorEl(null)
+        }}
+        saveTemplate={isSavingTemplate}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
         content={
           <TaskForm
             project={proj}
             onSubmit={onSubmit}
             task={task}
+            isMultiple={isMultiple}
             setTask={setTask}
+            toggleMultiple={() => setIsMultiple(!isMultiple)}
+            tasksCount={tasksCount}
+            setTasksCount={setTasksCount}
+            saveTemplate={isSavingTemplate}
+            setSaveTemplate={setIsSavingTemplate}
           />
         }
         open={isOpen}
         onClose={() => {
           setIsOpen(false)
           setTask(null)
+          setTasksCount(2)
+          setIsMultiple(false)
+          setIsSavingTemplate(false)
+          setAnchorEl(null)
+          setTemplate(null)
+          setIsSelectTemplateOpen(false)
+          setNewTemplate(null)
         }}
         isError={isError}
-        form='task-form'
+        form="task-form"
+      />
+      <TemplateOptionsPopper
+        template={template}
+        setTemplate={setTemplate}
+        templates={templates}
+        open={optionsOpen}
+        anchorEl={anchorEl}
+        task={task}
+        setTask={setTask}
+        isOpen={isSelectTemplateOpen}
+        setIsOpen={setIsSelectTemplateOpen}
+      />
+      <TemplateModal
+        onClose={() => {
+          setIsTemplateModalOpen(false)
+          setNewTemplate(null)
+        }}
+        onSubmit={onSubmit}
+        template={newTemplate}
+        setTemplate={setNewTemplate}
+        open={isTemplateModalOpen}
       />
     </>
   )

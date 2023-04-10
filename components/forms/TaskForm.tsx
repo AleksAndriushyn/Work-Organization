@@ -1,7 +1,14 @@
+import AddIcon from '@mui/icons-material/Add'
+import RemoveIcon from '@mui/icons-material/Remove'
 import {
   Avatar,
+  Box,
+  Checkbox,
+  Chip,
   FormControl,
+  FormControlLabel,
   FormGroup,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -15,28 +22,44 @@ import { getRandomUsers } from '../../lib/users'
 import styles from '../../styles/tasks/TaskForm.module.scss'
 import { Project, Task, Type, User } from '../../types/types'
 import Error from '../Error'
-import RenderUser from '../RenderUser'
-import showIcon from '../showIcon'
+import TaskIcon from '../Task/TaskIcon'
+import RenderUser from '../custom-components/CustomUser'
 
 const TaskForm = ({
   onSubmit,
   task,
   setTask,
   project,
+  isMultiple,
+  tasksCount,
+  setTasksCount,
+  toggleMultiple,
+  saveTemplate,
+  setSaveTemplate,
+  isEditing,
 }: {
   onSubmit: SubmitHandler<FieldValues>
   task: Task | null
   setTask: Function
   project?: Project
+  isMultiple?: boolean
+  tasksCount: number
+  setTasksCount: Function
+  toggleMultiple: Function
+  saveTemplate: boolean
+  setSaveTemplate: Function
+  isEditing?: boolean
 }) => {
   const { register, handleSubmit, formState } = useForm()
   const [projects, setProjects] = useState<Project[]>([])
   const [users, setUsers] = useState<User[]>([])
 
+  const findProject = (projectId: string) => {
+    return projects.find((project: Project) => project.id === projectId)?.name
+  }
+
   const type = task?.type as Type
-  const name = projects.find(
-    (project: Project) => project.id === task?.projectId
-  )?.name
+  const name = findProject(task?.projectId as string)
   const projectName = name ?? project?.name ?? ''
   const assignee = task?.assignee as User
   const types = [
@@ -64,7 +87,9 @@ const TaskForm = ({
         label="Name"
         autoFocus
         type="text"
-        {...register('name', { required: 'Name is required.' })}
+        {...register('name', {
+          required: task?.name ? false : 'Name is required.',
+        })}
         value={task?.name ?? ''}
         onChange={(event) =>
           setTask((prevState: Task) => ({
@@ -81,16 +106,14 @@ const TaskForm = ({
             value={type?.label ?? ''}
             label="Select type"
             {...register('type', {
-              required: 'Type is required.',
+              required: type?.label ? false : 'Type is required.',
             })}
-            renderValue={(value: string) => {
-              return (
-                <div className={styles.type}>
-                  {showIcon(value)}
-                  {value}
-                </div>
-              )
-            }}
+            renderValue={(value: string) => (
+              <div className={styles.type}>
+                <TaskIcon type={value} />
+                {value}
+              </div>
+            )}
             onChange={(event: SelectChangeEvent<string>) => {
               setTask((prevState: Task) => ({
                 ...prevState,
@@ -102,7 +125,7 @@ const TaskForm = ({
           >
             {types.map((type: Type, index: number) => (
               <MenuItem key={index} value={type.value} className={styles.type}>
-                {showIcon(type.label)}
+                <TaskIcon type={type.label} />
                 {type.label}
               </MenuItem>
             ))}
@@ -141,7 +164,7 @@ const TaskForm = ({
             value={assignee?.name ?? ''}
             label="Select assignee"
             {...register('assignee', {
-              required: 'Assignee is required.',
+              required: assignee?.name ? false : 'Assignee is required.',
             })}
             renderValue={(value: string) => (
               <RenderUser name={value} image={assignee.image} />
@@ -179,6 +202,52 @@ const TaskForm = ({
           }))
         }
       />
+      {!isEditing && (
+        <Box className={styles.checkbox_block}>
+          <Box className={styles.multiple_block}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={() => toggleMultiple()}
+                  checked={isMultiple}
+                />
+              }
+              label="Create multiple"
+            />
+            {isMultiple && (
+              <>
+                <IconButton
+                  onClick={() =>
+                    setTasksCount((prevState: number) => {
+                      const res = prevState - 1
+                      return res < 2 ? 2 : res
+                    })
+                  }
+                >
+                  <RemoveIcon />
+                </IconButton>
+                <Chip label={tasksCount} />
+                <IconButton
+                  onClick={() =>
+                    setTasksCount((prevState: number) => prevState + 1)
+                  }
+                >
+                  <AddIcon />
+                </IconButton>
+              </>
+            )}
+          </Box>
+          <FormControlLabel
+            control={
+              <Checkbox
+                onChange={() => setSaveTemplate(!saveTemplate)}
+                checked={saveTemplate}
+              />
+            }
+            label="Save as template"
+          />
+        </Box>
+      )}
     </form>
   )
 }

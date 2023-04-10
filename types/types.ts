@@ -28,7 +28,7 @@ export type Status = {
 export type Comment = {
   id: string
   message: string
-  userId: string
+  author: Omit<User, 'tasks'> | string
 }
 
 export type Task = {
@@ -45,4 +45,13 @@ export type Task = {
 
 export interface IParams extends ParsedUrlQuery {
   id: string
+}
+
+export type Template = Omit<Task, 'reporter' | 'status'> & {
+  templateName: string
+}
+
+export type ActiveComment = {
+  index: number
+  message: string
 }

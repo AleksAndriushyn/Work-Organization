@@ -1,0 +1,41 @@
+.drawer_list {
+    margin-top: 3.5rem;
+    width: 16rem;
+    z-index: 0;
+
+    .drawer_subheader {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 18px;
+        text-align: center;
+    }
+    .drawer_listItem {
+        border-top: 1px solid #ecedf1;
+        border-bottom: 1px solid #ecedf1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        .drawer_listItemText {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            &:hover {
+                text-decoration: underline;
+            }
+            p {
+                cursor: pointer;
+                width: 10rem;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &.active {
+            border: 2px solid #3482f7;
+            border-radius: 0.5rem;
+            text-decoration: underline;
+        }
+    }
+}

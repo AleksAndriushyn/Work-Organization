@@ -1,5 +1,5 @@
 import { LinearProgress } from '@mui/material'
-import { Status } from '../types/types'
+import { Status } from '../../types/types'
 
 type Color =
   | 'primary'
@@ -21,7 +21,7 @@ const CustomLinearProgress = ({
   return (
     <LinearProgress
       value={value}
-      variant='determinate'
+      variant="determinate"
       color={color ?? 'primary'}
       style={{ backgroundColor: '#dfe1e6', width: '50%' }}
     />
@@ -33,7 +33,7 @@ export const showProgress = (activeStatus: Status) => {
     case 'in-progress':
       return <CustomLinearProgress value={50} />
     case 'done':
-      return <CustomLinearProgress value={100} color='success' />
+      return <CustomLinearProgress value={100} color="success" />
     default:
       return <CustomLinearProgress value={0} />
   }

@@ -7,7 +7,7 @@ export const getProjects = async (): Promise<Project[]> => {
   }).then(async (res) => await res.json())
 }
 
-export const getProjectById = async (itemID: string) => {
+export const getProjectById = async (itemID: string):Promise<Project> => {
   const project: Project = await fetch(
     `${server}/api/project/getProjectById?id=${itemID}`,
     {
@@ -15,15 +15,5 @@ export const getProjectById = async (itemID: string) => {
     }
   ).then(async (res) => await res.json())
 
-  if (!project) {
-    return {
-      props: { hasError: true },
-    }
-  }
-
-  return {
-    props: {
-      project,
-    },
-  }
+  return project
 }

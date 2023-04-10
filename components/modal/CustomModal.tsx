@@ -1,3 +1,4 @@
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import {
   Button,
   Dialog,
@@ -5,6 +6,8 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material'
+import { MouseEventHandler } from 'react'
+import styles from '../../styles/Modal.module.scss'
 import WarningAlert from '../WarningAlert'
 
 const CustomModal = ({
@@ -13,20 +16,53 @@ const CustomModal = ({
   content,
   isError,
   form,
+  anchorEl,
+  setAnchorEl,
+  saveTemplate,
+  openTemplateModal,
 }: {
   open: boolean
-  onClose: Function
+  onClose: MouseEventHandler<HTMLButtonElement>
   content: JSX.Element
   isError: boolean
   form: string
+  anchorEl?: any
+  setAnchorEl?: Function
+  saveTemplate?: boolean
+  openTemplateModal?: Function
 }) => {
   return (
-    <Dialog onClose={() => onClose()} open={open} fullWidth>
-      <DialogTitle>Create Project</DialogTitle>
+    <Dialog onClose={onClose} open={open}>
+      <DialogTitle
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        Create {form === 'task-form' ? 'Task' : 'Project'}
+        {form === 'task-form' ? (
+          <MoreHorizIcon
+            className={styles.options}
+            onClick={(event: any) =>
+              setAnchorEl && setAnchorEl(anchorEl ? null : event.currentTarget)
+            }
+          />
+        ) : (
+          ''
+        )}
+      </DialogTitle>
       <DialogContent>{content}</DialogContent>
       <DialogActions>
-        <Button onClick={() => onClose()}>Close</Button>
-        <Button variant="contained" form={form} type="submit">
+        <Button onClick={onClose}>Close</Button>
+        <Button
+          onClick={() =>
+            saveTemplate && openTemplateModal && openTemplateModal()
+          }
+          variant="contained"
+          form={form}
+          type="submit"
+        >
           Submit
         </Button>
       </DialogActions>

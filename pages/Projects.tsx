@@ -1,18 +1,18 @@
+import { useUser } from '@auth0/nextjs-auth0/client'
 import { Box } from '@mui/material'
 import { GetServerSideProps } from 'next'
-import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useState } from 'react'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
-import CreateButton from '../components/CreateButton'
-import ProjectForm from '../components/forms/ProjectForm'
 import Layout from '../components/Layout'
+import ProjectTable from '../components/project/ProjectTable'
+import ProjectForm from '../components/forms/ProjectForm'
 import CustomModal from '../components/modal/CustomModal'
-import ProjectTable from '../components/Project/ProjectTable'
 import { saveData } from '../lib/api'
 import { getProjects } from '../lib/projects'
-import styles from '../styles/page-style.module.scss'
+import styles from '../styles/Page-style.module.scss'
 import { Project } from '../types/types'
+import CreateButton from '../components/custom-components/CreateButton'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const projectsData = await getProjects()
@@ -27,14 +27,15 @@ const Projects = ({ projectsData }: { projectsData: Project[] }) => {
   const [projects, setProjects] = useState<Project[]>(projectsData)
   const [isOpened, setIsOpened] = useState<boolean>(false)
   const [activeProject, setActiveProject] = useState<Project | null>(null)
-  const { data: session } = useSession()
+  const { user } = useUser()
   const [isError, setIsError] = useState(false)
+
   const handleClickOpen = (data: boolean) => {
     setIsOpened(data)
   }
 
   const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
-    if (!session) {
+    if (!user) {
       setIsError(true)
       return false
     }
@@ -63,7 +64,7 @@ const Projects = ({ projectsData }: { projectsData: Project[] }) => {
       <Layout>
         <Box className={styles.page_container}>
           <CreateButton
-            text='Create project'
+            text="Create project"
             handleClickOpen={handleClickOpen}
           />
           {isOpened && (
@@ -81,7 +82,7 @@ const Projects = ({ projectsData }: { projectsData: Project[] }) => {
                 setActiveProject(null)
               }}
               isError={isError}
-              form='project-form'
+              form="project-form"
             />
           )}
 

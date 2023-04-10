@@ -1,18 +1,15 @@
 @use "../common.scss" as common;
 
-@mixin accordionContent {
-    .summary_block {
+@mixin cardContent {
+    .content_block {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
 
         .task_name_block {
             display: flex;
-            gap: 8px;
+            gap: 0.5rem;
             align-items: center;
-            width: 19rem;
+            width: 27rem;
 
             .task_name {
                 cursor: pointer;
@@ -24,6 +21,19 @@
             width: 100%;
             align-items: center;
             justify-content: space-between;
+
+            .assignee_block {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                .assignee_name {
+                    width: 10rem;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-align: center;
+                }
+            }
         }
     }
     .details_block {
@@ -33,18 +43,18 @@
     }
 }
 
-.accordion {
+.card {
     width: 100%;
     background-color: white;
     color: black;
 
-    @include accordionContent();
+    @include cardContent();
 }
 
-.accordionDragged {
+.cardDragged {
     background-color: #456c86;
     color: white;
     z-index: 9999;
 
-   @include accordionContent();
+    @include cardContent();
 }

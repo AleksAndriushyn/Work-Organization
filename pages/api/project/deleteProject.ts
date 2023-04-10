@@ -7,10 +7,10 @@ export default async function deleteProject(
   res: NextApiResponse<Project>
 ) {
   const id = JSON.parse(req.body)
-  const deleteProject = await prisma.project.delete({
+  const deletedProject = await prisma.project.delete({
     where: {
       id,
     },
   })
-  res.json(deleteProject as Project)
+  res.json(deletedProject as Project)
 }

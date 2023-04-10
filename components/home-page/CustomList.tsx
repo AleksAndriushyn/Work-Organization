@@ -1,6 +1,6 @@
 import { List, ListSubheader } from '@mui/material'
 import { Droppable } from 'react-beautiful-dnd'
-import styles from '../styles/home/CustomList.module.scss'
+import styles from '../../styles/home/CustomList.module.scss'
 
 const CustomList = ({ label, children }: { label: string; children: any }) => {
   return (

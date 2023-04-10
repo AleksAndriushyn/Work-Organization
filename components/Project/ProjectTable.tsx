@@ -7,11 +7,13 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   Tooltip,
   Typography,
 } from '@mui/material'
 import Router from 'next/router'
+import { useState } from 'react'
 import { onDeleteItem } from '../../lib/api'
 import styles from '../../styles/projects/ProjectTable.module.scss'
 import { Project, Type } from '../../types/types'
@@ -36,6 +38,26 @@ const ProjectTable = ({
   setProject: Function
   setOpened: Function
 }) => {
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(+event.target.value)
+    setPage(0)
+  }
+
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, projects.length - page * rowsPerPage)
+  const slicedProjects = projects.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  )
   return (
     <Box className={styles.table}>
       <TableContainer>
@@ -54,20 +76,22 @@ const ProjectTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {projects.map((project: Project) => {
+            {slicedProjects.map((project: Project) => {
               const type = project?.type as Type
               return (
                 <TableRow key={project.name}>
                   <TableCell width={208}>
                     <Tooltip title={project.name}>
-                      <Typography
-                        className={styles.name}
-                        onClick={() =>
-                          setActiveProject(setOpened, setProject, project)
-                        }
-                      >
-                        {project.name}
-                      </Typography>
+                      <Box className={styles.project}>
+                        <Typography
+                          className={styles.name}
+                          onClick={() =>
+                            setActiveProject(setOpened, setProject, project)
+                          }
+                        >
+                          {project.name}
+                        </Typography>
+                      </Box>
                     </Tooltip>
                   </TableCell>
                   <TableCell>
@@ -102,8 +126,22 @@ const ProjectTable = ({
                 </TableRow>
               )
             })}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 69.5 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={projects.length}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          page={page}
+          rowsPerPage={rowsPerPage}
+        />
       </TableContainer>
     </Box>
   )

@@ -1,0 +1,24 @@
+.popper_list {
+    border: 1px solid black;
+    background-color: white;
+    margin-top: 1rem;
+
+    .popper_listItem {
+        &:hover {
+            text-decoration: underline;
+        }
+        p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 10rem;
+        }
+    }
+
+    .viewAll {
+        text-align: center;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

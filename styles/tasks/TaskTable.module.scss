@@ -1,11 +1,29 @@
 @use "../common.scss" as common;
 
 @include common.table;
-@include common.name;
 @include common.buttonGroup;
+
+@mixin name {
+    .name {
+        cursor: pointer;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
 
 .task {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 8px;
+    width: 15rem;
+    @include name();
+    text-align: left;
+}
+.project {
+    width: 15rem;
+    @include name();
+}
+.task:hover {
+    text-decoration: underline;
 }

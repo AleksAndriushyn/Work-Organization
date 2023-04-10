@@ -1,0 +1,17 @@
+.menu_list {
+    display: flex;
+
+    .menu_item {
+        background: none;
+        display: flex;
+        align-items: center;
+        color: white;
+    }
+
+    .menu_item:hover {
+        background: white;
+        color: black;
+        border-radius: 4px;
+        transition: 0.5s ease all;
+    }
+}

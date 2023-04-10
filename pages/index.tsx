@@ -1,15 +1,22 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
-import CustomList from '../components/CustomList'
 import Layout from '../components/Layout'
-import ListContent from '../components/ListContent'
+import TaskInfoModal from '../components/modal/TaskInfoModal'
 import { saveData } from '../lib/api'
 import { getProjectById, getProjects } from '../lib/projects'
 import styles from '../styles/home/Home.module.scss'
 import { Project, Status, Task } from '../types/types'
+import CustomList from '../components/home-page/CustomList'
+import ListContent from '../components/home-page/ListContent'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const projectsData = await getProjects()
@@ -32,9 +39,14 @@ const setStatus = (droppableId: string) => {
 }
 
 const Home = ({ projectsData }: { projectsData: Project[] }) => {
-  console.log(projectsData)
   const [project, setProject] = useState<Project>(projectsData[0])
   const [tasks, setTasks] = useState<Task[]>(project?.tasks as Task[])
+  const [activeTask, setActiveTask] = useState<Task | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const onClose = () => {
+    setIsModalOpen(false)
+  }
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return
@@ -72,7 +84,7 @@ const Home = ({ projectsData }: { projectsData: Project[] }) => {
     ;(async () => {
       setTasks(
         (await getProjectById(project?.id as string).then(
-          ({ props: { project } }) => project?.tasks
+          (project: Project) => project?.tasks
         )) as Task[]
       )
     })()
@@ -88,7 +100,9 @@ const Home = ({ projectsData }: { projectsData: Project[] }) => {
           <main className={styles.main}>
             <section className={styles.project_select_block}>
               <FormControl fullWidth>
-                <InputLabel style={{ zIndex: 0 }}>{!project ? 'Create a project' : 'Select project'}</InputLabel>
+                <InputLabel style={{ zIndex: 0 }}>
+                  {!project ? 'Create a project' : 'Select project'}
+                </InputLabel>
                 <Select
                   className={styles.project_select}
                   value={project?.name ?? ''}
@@ -104,7 +118,16 @@ const Home = ({ projectsData }: { projectsData: Project[] }) => {
                 >
                   {projectsData.map((project: Project) => (
                     <MenuItem key={project?.id} value={project?.name}>
-                      {project?.name}
+                      <Typography
+                        className={styles.project_name}
+                        style={{
+                          width: '13rem',
+                          textOverflow: 'ellipsis',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        {project?.name}
+                      </Typography>
                     </MenuItem>
                   ))}
                 </Select>
@@ -115,7 +138,13 @@ const Home = ({ projectsData }: { projectsData: Project[] }) => {
                 {tasks
                   ?.filter((task) => (task.status as Status)?.value === 'to-do')
                   .map((task: Task, index: number) => (
-                    <ListContent index={index} task={task} key={task.id} />
+                    <ListContent
+                      index={index}
+                      task={task}
+                      key={task.id}
+                      setActiveTask={setActiveTask}
+                      setIsModalOpen={setIsModalOpen}
+                    />
                   ))}
               </CustomList>
               <CustomList label={'In Progress'}>
@@ -124,27 +153,43 @@ const Home = ({ projectsData }: { projectsData: Project[] }) => {
                     (task) => (task.status as Status)?.value === 'in-progress'
                   )
                   .map((task: Task, index: number) => (
-                    <ListContent task={task} key={task.id} index={index} />
+                    <ListContent
+                      task={task}
+                      key={task.id}
+                      index={index}
+                      setActiveTask={setActiveTask}
+                      setIsModalOpen={setIsModalOpen}
+                    />
                   ))}
               </CustomList>
               <CustomList label={'Done'}>
                 {tasks
                   ?.filter((task) => (task.status as Status)?.value === 'done')
                   .map((task: Task, index: number) => (
-                    <ListContent task={task} index={index} key={task.id} />
+                    <ListContent
+                      task={task}
+                      index={index}
+                      key={task.id}
+                      setActiveTask={setActiveTask}
+                      setIsModalOpen={setIsModalOpen}
+                    />
                   ))}
               </CustomList>
             </section>
           </main>
         </DragDropContext>
       </Layout>
+      <TaskInfoModal
+        open={isModalOpen}
+        onClose={onClose}
+        task={activeTask}
+        tasks={tasks}
+        setTasks={setTasks}
+        setTask={setActiveTask}
+      />
     </>
   )
 }
 
 export default Home
-
-
-
-
 
