@@ -110,28 +110,31 @@ const Content = ({
     <Box
       style={{
         display: 'flex',
-        flexDirection: 'column',
+        gap: '15rem',
       }}
     >
-      <DrawerComponent
-        activeTaskIndex={activeTaskIndex}
-        setActiveTaskIndex={setActiveTaskIndex}
-        setActiveTask={setActiveTask}
-        tasks={project.tasks ?? []}
-        projectName={project.name}
-        setProject={setProject}
-      />
+      <Box sx={{ zIndex: 0, width: '100px' }}>
+        <DrawerComponent
+          activeTaskIndex={activeTaskIndex}
+          setActiveTaskIndex={setActiveTaskIndex}
+          setActiveTask={setActiveTask}
+          tasks={project.tasks ?? []}
+          projectName={project.name}
+          setProject={setProject}
+        />
+      </Box>
       <Box
         style={{
           display: 'flex',
           flexDirection: 'column',
-          margin: '3rem 0 0 10rem',
+          width: '100%',
+          marginTop: '5rem',
         }}
       >
         <Box>
           <Button
             variant="contained"
-            style={{ margin: '3em 2em', float: 'right' }}
+            style={{ margin: '3em', float: 'right' }}
             startIcon={<AddIcon />}
             onClick={() => setIsOpen(true)}
           >
@@ -139,13 +142,17 @@ const Content = ({
           </Button>
         </Box>
         {project?.tasks?.length ? (
-          <Box style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+            }}
+          >
             <Box
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '3em',
-                marginLeft: '2rem',
               }}
             >
               <Box

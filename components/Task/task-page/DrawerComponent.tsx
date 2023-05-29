@@ -58,7 +58,6 @@ export const DrawerComponent = (props: {
       ModalProps={{
         keepMounted: true,
       }}
-      sx={{ zIndex: 0 }}
       variant="permanent"
     >
       <List className={styles.drawer_list}>

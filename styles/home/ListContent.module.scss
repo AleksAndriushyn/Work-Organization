@@ -4,12 +4,12 @@
     .content_block {
         display: flex;
         flex-direction: column;
+        width: 24rem;
 
         .task_name_block {
             display: flex;
             gap: 0.5rem;
             align-items: center;
-            width: 27rem;
 
             .task_name {
                 cursor: pointer;
